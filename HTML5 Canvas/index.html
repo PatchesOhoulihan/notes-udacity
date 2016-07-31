@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/master.css">
+  <title>HTML 5 Canvas</title>
+</head>
+<body>
+  <h2>HTML Canvas Basics</h2>
+  <h3>Creating a Canvas</h3>
+  <p><code>&lt;html&gt; <br> &lt;head&gt;<br> &lt;/head&gt; <br> &lt;body&gt; <br> &lt;canvas id="c" width="200" height="200"&gt;&lt;/canvas&gt;<br>&lt;script&gt; <br> var = c document.querySelector('#c'); <br> var = ctx = c.getContext('2d'); <br> &lt;/script&gt; <br> &lt;/body&gt; <br> &lt;/html&gt;</code></p>
+  <p>Note: Make sure if you refector the the js part in a separate file that you load the script AFTER the Dom is created.</p>
+  <h3>Coordinate system</h3>
+  <ul>
+    <li>
+      <p>(0/0) is in the Top left</p>
+    </li>
+    <li>
+      <p>x coordinates are getting bigger if you go to the right.</p>
+    </li>
+    <li>
+      <p>y coordinates are getting bigger if you go down.</p>
+    </li>
+  </ul>
+  <h3>Drawing images on the canvas</h3>
+  <p>drawImage can be called with either 3, 5, or 9 parameters. So it has 3 signatures.</p>
+  <p>For further Info <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage">check here</a></p>
+  <h3><code>Uncaught SecurityError: Failed to execute 'toDataURL' on
+'HTMLCanvasElement': Tainted canvases may not be exported.</code></h3>
+<p>There are couple of ways to get around this error and one (optionally) is to start a local web server.
+<strong>Using Python SimpleHTTPServer</strong></p>
+
+<p>The simplest way is to use SimpleHTTPServer if you already have Python installed.</p>
+
+<p>Python comes already installed on most Mac OS X and Linux computers. In a terminal window, change to the directory that has your HTML files and run the following command:</p>
+
+<p>python -m SimpleHTTPServer</p>
+
+<p>After it starts, you can navigate to http://0.0.0.0:8000/index.html</p>
+<h3>Drawing Shapes</h3>
+<p><code>.fillRect(x,y,width, height)</code> drawns an filled rectangle</p>
+<p><code>.strokeRect(x,y,width,height) creates an empty(colorwise) Rectangle</code></p>
+<h3>More about Rectangles</h3>
+<p>We can use what we already know about rectangles to "erase" portions of a canvas using <code>fillRect</code> and setting the <code>fillStyle</code> to our background color. Your background color will likely be <code>white</code>. You haven't learned about fillStyle yet but trust me on this, that's how you set a color. So don't act surprised when it comes up again in a couple videos.</p>
+<p><code>clearRect</code> is an easier way to do the same thing without modifying the <code>fillStyle</code>. You'll learn more why changing the <code>fillStyle</code> isn't always the best option a bit later.</p>
+<p>If you have a canvas c and given some code to draw a rectangle in a given color, you might write something like</p>
+<p><code>var c = document.querySelector("#c");<br>
+var ctx = c.getContext("2d");<br>
+ctx.fillStyle = "blue";<br>
+// Start at (0,0) and draw a 50px x 50px blue rectangle. <br>
+ctx.fillRect(0,0,50,50);<br>
+// Start at (0,0) and clear a 25px x 25px rectangle. <br>
+ctx.clearRect(0,0,25,25);<br>
+</code></p>
+<p>If you want to erase the entire canvas, you could call clearRect with the dimensions of canvas as follows:</p>
+<p><code>ctx.clearRect(0, 0, c.width, c.height);</code></p>
+<p>A slightly shorter way to clear a full canvas is to change either the height or the width on the canvas:</p>
+<p><code>c.width = c.width;</code></p>
+<p>Doing so saves some keystrokes but may not be as readable to others who are viewing your code. </p>
+<p><mark>Use clearRect when you want to erase a portion of the canvas or object.</mark></p>
+<h3>Selfmade Shapes</h3>
+<p>At first use the <code>canvasContext.beginPath();</code> to tell that you're about to draw a new Shape.</p>
+<p>With the <code>canvasContext.moveTo(x,y)</code> Methode you're able to move on the Canvas like a pen. With it you bring the 'pen' to a position you wish.</p>
+<p>With the <code>canvasContext.lineTo(x,y)</code> you draw a line from the position you specify with the <code>canvasContext.moveTo(x,y)</code></p>
+<p>But after you execute the command <code>canvasContext.lineTo(x,y)</code> there is still no line drawn. To do so you need to use these Methods:</p>
+<ul>
+  <li>
+    <p><code>canvasContext.fill()</code> To fill the space of the shape you have drawn.</p>
+  </li>
+  <li>
+    <p><code>canvasContext.stroke()</code> To set the Color of the line for the Shape.</p>
+  </li>
+</ul>
+<h3>Moving Objects in a Canvas</h3>
+<p>Canvas2D allows you to translate (move), rotate, or scale objects.</p>
+<table>
+  <tr>
+    <th>
+      <p>Name</p>
+    </th>
+    <th>
+      <p>Summary</p>
+    </th>
+    <th>
+      <p>code</p>
+    </th>
+  </tr>
+  <tr>
+    <td><strong>Scaling</strong></td>
+    <td><p><code>ctx.scale(x,y)</code> multiplies the x and y values by a given factor</p></td>
+    <td><code>ctx.scale(2,3)</code> will make all values twice as large on the x axis and three times as large on the y axis. </td>
+  </tr>
+  <tr>
+    <td><strong>Translation</strong></td>
+    <td><p><code>translate(x,y)</code> moves all subsequent draw commands by x number of pixels on horizontally and y pixels vertically.</p></td>
+    <td><code>ctx.translate(20,40);</code> moves all elements drawn after it 20 pixels to the rights and 40 pixels down.</td>
+  </tr>
+  <tr>
+    <td><strong>Rotation</strong> </td>
+    <td><p><code>ctx.rotate(angleRadians)</code> rotates an object a certain number of radians (generally) about its center. You may have learned about radians in school but here's a handy formula to convert a value from degrees to radians.</p></td>
+    <td><code>radians = degrees * (Math.PI/180)</code> Don't ask us why everything in Computer Graphics uses radians. We have no idea. :)</td>
+  </tr>
+</table>
+<h4>Order of operations</h4>
+<p>You should generally scale objects first, rotate them next, and then finally translate last. There are times when you'd want to rotate around an arbitrary point instead of an object's center, that's out of scope for this lesson. </p>
+<p>It’s important to note that whatever transformations apply for all subsequent objects until you reverse them.</p>
+<h3>Saving and Restoring Canvas State</h3>
+<p>Every canvas object contains a stack of drawing states. Stacks are data structures that only let you push new items at one end. When you retrieve an item, it's the last item that was pushed or Last In-First Out(LIFO).</p>
+<p>Let's say you wanted to draw a couple rectangles in different colors. For this small example, we could get away with reassigning the fillStyle each time instead of using save and restore.</p>
+<p><code>
+var c = document.querySelector("#c"); <br>
+var ctx = c.getContext("2d");<br>
+<br>
+ctx.fillStyle = "blue";<br>
+ctx.fillRect(0,0,50,50);<br>
+<br>
+ctx.fillStyle = "green"<br>
+ctx.fillRect(100,100,10,10);<br>
+<br>
+ctx.fillStyle = "blue";<br>
+ctx.fillRect(200,10,20,20);</code></p>
+<p>This is better.</p>
+<p><code>var c = document.querySelector("#c");<br>
+var ctx = c.getContext("2d");<br>
+<br>
+ctx.fillStyle = "blue";<br>
+ctx.fillRect(0,0,50,50);<br>
+<br>
+// Save state with blue fill <br>
+ctx.save(); <br>
+ctx.fillStyle = "green"; <br>
+ctx.fillRect(100,100,10,10); <br>
+// Restore to blue fill <br>
+ctx.restore(); <br>
+<br>
+ctx.fillRect(200,10,20,20);</code></p>
+<ul>
+  <li>
+    <p><code>The current transformation matrix (rotation, scaling, translation)</code></p>
+  </li>
+  <li>
+    <p><code>strokeStyle</code></p>
+  </li>
+  <li>
+    <p><code>fillStyle</code></p>
+  </li>
+  <li>
+    <p><code>fillStyle</code></p>
+  </li>
+  <li>
+    <p><code>globalAlpha</code></p>
+  </li>
+  <li>
+    <p><code>lineWidth</code></p>
+  </li>
+  <li>
+    <p><code>lineCap</code></p>
+  </li>
+  <li>
+    <p><code>lineJoin</code></p>
+  </li>
+  <li>
+    <p><code>miterLimit</code></p>
+  </li>
+  <li>
+    <p><code>shadowOffsetX</code></p>
+  </li>
+  <li>
+    <p><code>shadowOffsetY</code></p>
+  </li>
+  <li>
+    <p><code>shadowBlur</code></p>
+  </li>
+  <li>
+    <p><code>shadowColor</code></p>
+  </li>
+  <li>
+    <p><code>globalCompositeOperation</code></p>
+  </li>
+  <li>
+    <p><code>textAlign</code></p>
+  </li>
+  <li>
+    <p><code>textBaseline</code></p>
+  </li>
+  <li>
+    <p><code>The current clipping region</code></p>
+  </li>
+</ul>
+</body>
+</html>
