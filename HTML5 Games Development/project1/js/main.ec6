@@ -1,0 +1,32 @@
+(()=>{
+
+  let $ = (document).querySelector.bind(document);
+  let $$ = (document).querySelectorAll.bind(document);
+  let canvas = document.createElement('canvas');
+  let ctx = canvas.getContext('2d');
+  
+let onImageLoad = (image) =>{
+    console.log('Picture Load: Done');
+    ctx.drawImage(image,192,192);
+}    
+    
+let setup = () => {
+  let body = $('body');
+  alert(body);
+
+	canvas.setAttribute('width', 500);
+	canvas.setAttribute('height', 700);
+    
+    console.log(canvas.width);
+  
+    let image = new Image();
+	
+	image.src="img/robot-cute-character-waving-hand.jpg";
+	
+	image.onload = onImageLoad(image);
+    
+}
+
+setup();
+
+})();
